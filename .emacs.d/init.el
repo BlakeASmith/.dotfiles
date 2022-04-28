@@ -104,6 +104,8 @@
   :after (rjsx-mode)
   :hook (rjsx-mode . prettier-js-mode))
 
+(setq backup-directory-alist '(("." . "~/.emacs.d/backup-files")))
+
 (use-package undo-tree
   :ensure t
   :bind (("C-x /" . undo-tree-visualize))
@@ -172,7 +174,7 @@
          ("C-c n i" . org-roam-node-insert)
          ("C-c n c" . org-roam-capture))
   :config
-  (org-roam-db-autosync-mode)jj)
+  (org-roam-db-autosync-mode))
 
 ;; Capture templates taken from https://jethrokuan.github.io/org-roam-guide/
 (setq org-roam-capture-templates
@@ -188,12 +190,12 @@
 	 :unnarrowed t)
 	("i" "idea" plain "%?"
 	 :if-new
-	 (file+head "ideas/${title}.org" "#+title: ${title}\n#+filetags: :idea:\ne")
+	 (file+head "ideas/${title}.org" "#+title: ${title}\n#+filetags: :idea:\n")
 	 :immetiate-finish t
 	 :unnarrowed t)
 	("t" "tag" plain "%?"
 	 :if-new
-	 (file+head "ideas/${title}.org" "#+title: ${title}\n#+filetags: :tag:\ne")
+	 (file+head "ideas/${title}.org" "#+title: ${title}\n#+filetags: :tag:\n")
 	 :immetiate-finish t
 	 :unnarrowed t)
 	("a" "article" plain "%?"
@@ -269,7 +271,9 @@
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) "))
+  (setq ivy-count-format "(%d/%d) ")
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (global-set-key (kbd "C-x b") 'counsel-buffer-or-recentf))
 
 (load-theme 'wombat)
 
@@ -377,20 +381,16 @@
 
 (add-hook 'exwm-randr-screen-change-hook
       (lambda ()
-	;; script from arandr
-	;; I tried to move it to a separate file but then my WM exploded
-	(me/nicer-xrandr-nonsense (concat
-				   "xrandr "
-				   "--output eDP-1 --primary --mode 1920x1200 --pos 1440x1952 --rotate normal "
-				   "--output DP-1 --off " ;; These --off lines might not matter
-				   "--output DP-2 --off " 
-				   "--output DP-3 --off "
-				   "--output DP-1-1 --off "
-				   "--output DP-1-2 --mode 2560x1440 --pos 1440x512 --rotate normal "
-				   "--output DP-1-3 --mode 2560x1440 --pos 0x0 --rotate left"))))
+        ;; script from arandr
+        ;; I tried to move it to a separate file but then my WM exploded
+        (me/nicer-xrandr-nonsense (concat
+                                   "xrandr "
+                                   "--output eDP1 --primary --mode 1920x1200 --pos 214x1440 --rotate normal "
+                                   "--output DP1-2 --mode 2560x1440 --pos 2560x0 --rotate normal "
+                                   "--output DP1-3 --mode 2560x1440 --pos 0x0  --rotate normal"))))
 
 ;; Now we have to tell exwm which workspaces to put to each output
-(setq exwm-randr-workspace-output-plist '(0 "eDP-1" 1 "DP-1-2" 2 "DP-1-3"))
+(setq exwm-randr-workspace-output-plist '(0 "eDP1" 1 "DP1-2" 2 "DP1-3"))
 
 ;; In case of laptop disconnection
 (defun me/workspaces-lost-on-ghost-monitors ()
