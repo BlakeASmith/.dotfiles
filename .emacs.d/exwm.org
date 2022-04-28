@@ -1,0 +1,20 @@
+#+TITLE: EXWM Setup
+
+* EXWM
+
+** Desktop File
+
+Creating a .desktop file allows EXWM to be an option in the login manager.
+
+Run M-x org-babel-tangle to create the .desktop file.
+
+#+begin_src toml :tangle /sudo::/usr/share/xsessions/EXWM.desktop
+[Desktop Entry]
+Name=EXWM
+Comment=Emacs Window Manager
+Exec=sh /home/blake/.emacs.d/launch-exwm.sh
+TryExec=sh
+Type=Application
+X-LightDM-DesktopName=exwm
+DesktopNames=exwm
+#+end_src
