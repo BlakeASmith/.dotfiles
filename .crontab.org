@@ -1,0 +1,11 @@
+* Crontab
+
+** Setup
+
+Follow the [[https://wiki.archlinux.org/title/Cron][arch wiki]] to setup crontab
+
+** Backup org files to dropbox
+
+#+begin_src shell-script :shebang #!/bin/sh :tangle /sudo::/etc/cron.hourly/copy-roam-files
+  cp -r ~/org-roam ~/Dropbox/Documents/Org/org-roam
+#+end_src
